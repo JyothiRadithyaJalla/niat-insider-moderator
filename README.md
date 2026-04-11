@@ -8,6 +8,11 @@ A secure, scoped content-management dashboard that allows moderators to manage a
 ### Prerequisites
 - Node.js (v18+)
 - MongoDB running locally or a valid MongoDB URI
+- Git
+
+### Cloning the Repository
+1. Clone the repository: `git clone <repository-url>`
+2. Navigate to the project root: `cd niat-insider-moderator`
 
 ### Backend Setup
 1. Navigate to the `server` directory: `cd server`
@@ -18,7 +23,7 @@ A secure, scoped content-management dashboard that allows moderators to manage a
 ### Frontend Setup
 1. Navigate to the `client` directory: `cd client`
 2. Install dependencies: `npm install`
-3. Configure environment variables: The project requires `.env.test` and `.env.production` in the `client` directory.
+3. Configure environment variables: The project requires `.env.development`, `.env.test`, and `.env.production` in the `client` directory.
 4. Run the frontend application: `npm run dev`
 
 ## Environment Variables
@@ -51,3 +56,6 @@ VITE_API_URL=http://localhost:5001/api
 
 ## Tech Stack
 - MongoDB, Express.js, React, Node.js, TypeScript
+
+## Security Considerations
+- **JWT Storage:** The application currently stores the returned JWT securely inside `localStorage`. While standard for SPAs, be aware it possesses fundamental trade-offs susceptible to XSS (cross-site scripting) attacks. In a strict enterprise parameter, upgrading to `httpOnly` secure cookies is recommended for mitigating these risks natively.
