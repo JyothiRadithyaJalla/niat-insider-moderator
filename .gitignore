@@ -1,7 +1,36 @@
-node_modules
-.env*
-.env
-.env.test
-.env.production
-dist/
+# Node modules
 node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build files
+dist/
+client/dist/
+server/dist/
+
+# Environment variables
+.env
+.env.*
+client/.env
+server/.env
+server/.env.test
+server/.env.production
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
