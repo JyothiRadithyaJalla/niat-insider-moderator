@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { loginUser, getUserProfile } from '../services/auth.service.js';
 import { HttpStatus } from '../types/auth.types.js';
+// Import to activate the global Express.Request augmentation (adds req.user)
+import '../middleware/authenticate.js';
 
 /**
  * POST /api/auth/login
