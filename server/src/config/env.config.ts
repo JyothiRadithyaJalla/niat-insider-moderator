@@ -20,7 +20,7 @@ const getEnvVariable = (key: string, fallback?: string): string => {
   if (value === undefined) {
     throw new Error(`Missing required environment variable: ${key}`);
   }
-  return value;
+  return value.trim();
 };
 
 export const env: EnvConfig = {

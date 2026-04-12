@@ -15,7 +15,7 @@ const getEnvVariable = (key, fallback) => {
     if (value === undefined) {
         throw new Error(`Missing required environment variable: ${key}`);
     }
-    return value;
+    return value.trim();
 };
 exports.env = {
     PORT: parseInt(getEnvVariable('PORT', '5000'), 10),

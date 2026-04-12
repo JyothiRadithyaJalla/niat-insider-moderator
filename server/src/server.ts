@@ -12,8 +12,26 @@ const app = express();
 
 
 // ── Middleware ───────────────────────────────────────────────
+const allowedOrigins = [
+  env.CLIENT_URL,
+  'https://niat-insider-moderator-zeta.vercel.app',
+  'https://niat-insider-moderator-zeta.vercel.app/',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173'
+];
+
 app.use(cors({
-  origin: [env.CLIENT_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log(`[CORS] Blocked request from origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 app.use(express.json());
@@ -53,7 +71,11 @@ const server = http.createServer(app);
 // ── Start Server First (for Port Binding) ────────────────────
 const PORT = Number(env.PORT) || 5000;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server is listening on 0.0.0.0:${PORT} [${env.NODE_ENV}]`);
+  console.log('----------------------------------------------------');
+  console.log(`🚀 Server is listening on 0.0.0.0:${PORT}`);
+  console.log(`🌍 Environment: ${env.NODE_ENV}`);
+  console.log(`🔒 Allowed Client URL: ${env.CLIENT_URL}`);
+  console.log('----------------------------------------------------');
 });
 
 // ── Connect to MongoDB ────────────────────────────────────────

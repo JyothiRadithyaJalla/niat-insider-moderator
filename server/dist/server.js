@@ -14,8 +14,26 @@ const announcement_routes_js_1 = __importDefault(require("./routes/announcement.
 const job_routes_js_1 = __importDefault(require("./routes/job.routes.js"));
 const app = (0, express_1.default)();
 // ── Middleware ───────────────────────────────────────────────
+const allowedOrigins = [
+    env_config_js_1.env.CLIENT_URL,
+    'https://niat-insider-moderator-zeta.vercel.app',
+    'https://niat-insider-moderator-zeta.vercel.app/',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173'
+];
 app.use((0, cors_1.default)({
-    origin: [env_config_js_1.env.CLIENT_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin)
+            return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        }
+        else {
+            console.log(`[CORS] Blocked request from origin: ${origin}`);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
 }));
 app.use(express_1.default.json());
@@ -48,7 +66,11 @@ const server = http_1.default.createServer(app);
 // ── Start Server First (for Port Binding) ────────────────────
 const PORT = Number(env_config_js_1.env.PORT) || 5000;
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Server is listening on 0.0.0.0:${PORT} [${env_config_js_1.env.NODE_ENV}]`);
+    console.log('----------------------------------------------------');
+    console.log(`🚀 Server is listening on 0.0.0.0:${PORT}`);
+    console.log(`🌍 Environment: ${env_config_js_1.env.NODE_ENV}`);
+    console.log(`🔒 Allowed Client URL: ${env_config_js_1.env.CLIENT_URL}`);
+    console.log('----------------------------------------------------');
 });
 // ── Connect to MongoDB ────────────────────────────────────────
 mongoose_1.default
