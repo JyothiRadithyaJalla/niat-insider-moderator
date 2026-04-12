@@ -25,12 +25,16 @@ app.use((req, _res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
+// ── Health Check ─────────────────────────────────────────────
+app.get('/', (_req, res) => {
+    res.status(200).send('Moderator API is running.');
+});
 // ── Test route ───────────────────────────────────────────────
 app.get('/api/test', (_req, res) => {
     res.status(200).json({
         message: 'API is working! Moderator backend is up and running.',
         environment: env_config_js_1.env.NODE_ENV,
-        version: '1.0.4-jobs-fix',
+        version: '1.0.5-deploy-fix',
         timestamp: new Date().toISOString()
     });
 });
@@ -39,22 +43,25 @@ app.use('/api/auth', auth_routes_js_1.default);
 app.use('/api/articles', article_routes_js_1.default);
 app.use('/api/announcements', announcement_routes_js_1.default);
 app.use('/api/jobs', job_routes_js_1.default);
-// ── Create HTTP server explicitly ────────────────────────────
+// ── Create HTTP server ───────────────────────────────────────
 const server = http_1.default.createServer(app);
-// ── Connect to MongoDB & start ───────────────────────────────
+// ── Start Server First (for Port Binding) ────────────────────
+const PORT = Number(env_config_js_1.env.PORT) || 5000;
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server is listening on 0.0.0.0:${PORT} [${env_config_js_1.env.NODE_ENV}]`);
+});
+// ── Connect to MongoDB ────────────────────────────────────────
 mongoose_1.default
-    .connect(env_config_js_1.env.MONGO_URI)
+    .connect(env_config_js_1.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 5000, // Fail fast if DB down
+})
     .then(() => {
     console.log('✅ Successfully connected to MongoDB');
-    server.listen(Number(env_config_js_1.env.PORT), () => {
-        const addr = server.address();
-        console.log(`🚀 Server is running on port ${env_config_js_1.env.PORT} [${env_config_js_1.env.NODE_ENV}]`);
-        console.log(`   Address: ${JSON.stringify(addr)}`);
-    });
 })
     .catch((error) => {
     console.error('❌ Error connecting to MongoDB:', error);
-    process.exit(1);
+    // On some platforms we might want to stay alive even if DB fails initially
+    // process.exit(1); 
 });
 exports.default = app;
 //# sourceMappingURL=server.js.map
