@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMe = exports.login = void 0;
 const auth_service_js_1 = require("../services/auth.service.js");
 const auth_types_js_1 = require("../types/auth.types.js");
+// Import to activate the global Express.Request augmentation (adds req.user)
+require("../middleware/authenticate.js");
 /**
  * POST /api/auth/login
  * Authenticates user with email & password, returns JWT token.

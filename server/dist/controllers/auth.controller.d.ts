@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import '../middleware/authenticate.js';
 /**
  * POST /api/auth/login
  * Authenticates user with email & password, returns JWT token.

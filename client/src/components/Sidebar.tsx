@@ -2,7 +2,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes.constants';
 import { 
   Home, 
-  BookOpen, 
   Megaphone, 
   Briefcase, 
   Terminal, 
