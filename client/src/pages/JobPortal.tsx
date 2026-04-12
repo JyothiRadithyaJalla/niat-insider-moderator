@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import { 
-  Briefcase, MapPin, Clock, ExternalLink, Plus, Search, 
-  Building2, Users, DollarSign, Calendar, ChevronRight,
+  Briefcase, MapPin, Clock, Plus, Search, 
+  Building2, Users, DollarSign, ChevronRight,
   Edit3, Trash2, X, Check, AlertTriangle, Building
 } from 'lucide-react';
 import { useJobs } from '../hooks/useJobs';
