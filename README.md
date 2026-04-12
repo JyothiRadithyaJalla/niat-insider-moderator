@@ -3,6 +3,8 @@
 ## Overview
 A secure, scoped content-management dashboard that allows moderators to manage articles belonging to their assigned campus only.
 
+DeployLink = niat-insider-moderator-zeta.vercel.app
+
 ## Screenshots
 
 ### Dashboard
