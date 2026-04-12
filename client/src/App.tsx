@@ -5,6 +5,9 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Leaderboard from './pages/Leaderboard';
+import Announcements from './pages/Announcements';
+import JobPortal from './pages/JobPortal';
+import CodePlayground from './pages/CodePlayground';
 import { ROUTES } from './constants/routes.constants';
 
 function App() {
@@ -21,11 +24,23 @@ function App() {
             path={ROUTES.LEADERBOARD} 
             element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} 
           />
+          <Route 
+            path={ROUTES.ANNOUNCEMENTS} 
+            element={<ProtectedRoute><Announcements /></ProtectedRoute>} 
+          />
+          <Route 
+            path={ROUTES.JOB_PORTAL} 
+            element={<ProtectedRoute><JobPortal /></ProtectedRoute>} 
+          />
+          <Route 
+            path={ROUTES.CODE_PLAYGROUND} 
+            element={<ProtectedRoute><CodePlayground /></ProtectedRoute>} 
+          />
           <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
           <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
         </Routes>
       </AuthProvider>
-      <Toaster position="bottom-right" toastOptions={{ style: { background: '#1e2233', color: '#fff' } }} />
+      <Toaster position="bottom-right" toastOptions={{ style: { background: '#1e293b', color: '#fff', borderRadius: '10px' } }} />
     </Router>
   );
 }
