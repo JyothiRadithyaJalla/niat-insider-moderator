@@ -1,0 +1,61 @@
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User, { IUserDocument } from '../models/User.model.js';
+import { env } from '../config/env.config.js';
+import { ITokenPayload, UserRole } from '../types/auth.types.js';
+
+interface LoginResult {
+  token: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    role: UserRole;
+    campus: string;
+  };
+}
+
+/**
+ * Authenticates a user by email + password and returns a JWT.
+ */
+export const loginUser = async (email: string, password: string): Promise<LoginResult> => {
+  const user: IUserDocument | null = await User.findOne({ email });
+  if (!user) {
+    throw new Error('Invalid email or password.');
+  }
+
+  const isMatch: boolean = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw new Error('Invalid email or password.');
+  }
+
+  const tokenPayload: ITokenPayload = {
+    userId: String(user._id),
+    role: user.role,
+    campus: user.campus,
+  };
+
+  const token: string = jwt.sign(
+    tokenPayload as unknown as Record<string, unknown>,
+    env.JWT_SECRET,
+    { expiresIn: env.JWT_EXPIRES_IN as unknown as number }
+  );
+
+  return {
+    token,
+    user: {
+      id: String(user._id),
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      campus: user.campus,
+    },
+  };
+};
+
+/**
+ * Retrieves user profile by ID (excludes password).
+ */
+export const getUserProfile = async (userId: string): Promise<IUserDocument | null> => {
+  return User.findById(userId).select('-password');
+};
