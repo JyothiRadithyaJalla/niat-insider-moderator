@@ -3,6 +3,17 @@
 ## Overview
 A secure, scoped content-management dashboard that allows moderators to manage articles belonging to their assigned campus only.
 
+## Screenshots
+
+### Dashboard
+![Dashboard Home](screenshots/dashboard_home.png)
+
+### Announcements Management
+![Announcements](screenshots/announcements.png)
+
+### Jobs Board
+![Jobs Board](screenshots/jobs_board.png)
+
 ## Setup Instructions
 
 ### Prerequisites
