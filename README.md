@@ -26,6 +26,16 @@ A secure, scoped content-management dashboard that allows moderators to manage a
 3. Configure environment variables: The project requires `.env.development`, `.env.test`, and `.env.production` in the `client` directory.
 4. Run the frontend application: `npm run dev`
 
+## Demo Credentials
+Use these credentials to test the platform. Each account is scoped to its specific campus.
+
+| Campus | Email | Password |
+|--------|-------|----------|
+| **Kapil Kavuri Hub (KKH)** | `admin@kkh.edu` | `password123` |
+| **Sanjay Ghodawat University (SGU)** | `admin@sgu.edu` | `password123` |
+| **Noida International University (NIU)** | `admin@niu.edu` | `password123` |
+| **NRI University** | `admin@nri.edu` | `password123` |
+
 ## Environment Variables
 
 ### Backend (`server/.env.test`)
