@@ -10,6 +10,8 @@ const cors_1 = __importDefault(require("cors"));
 const env_config_js_1 = require("./config/env.config.js");
 const auth_routes_js_1 = __importDefault(require("./routes/auth.routes.js"));
 const article_routes_js_1 = __importDefault(require("./routes/article.routes.js"));
+const announcement_routes_js_1 = __importDefault(require("./routes/announcement.routes.js"));
+const job_routes_js_1 = __importDefault(require("./routes/job.routes.js"));
 const app = (0, express_1.default)();
 // ── Middleware ───────────────────────────────────────────────
 app.use((0, cors_1.default)({
@@ -18,16 +20,25 @@ app.use((0, cors_1.default)({
 }));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+// Request logging middleware
+app.use((req, _res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
 // ── Test route ───────────────────────────────────────────────
 app.get('/api/test', (_req, res) => {
     res.status(200).json({
         message: 'API is working! Moderator backend is up and running.',
         environment: env_config_js_1.env.NODE_ENV,
+        version: '1.0.4-jobs-fix',
+        timestamp: new Date().toISOString()
     });
 });
 // ── API routes ───────────────────────────────────────────────
 app.use('/api/auth', auth_routes_js_1.default);
 app.use('/api/articles', article_routes_js_1.default);
+app.use('/api/announcements', announcement_routes_js_1.default);
+app.use('/api/jobs', job_routes_js_1.default);
 // ── Create HTTP server explicitly ────────────────────────────
 const server = http_1.default.createServer(app);
 // ── Connect to MongoDB & start ───────────────────────────────

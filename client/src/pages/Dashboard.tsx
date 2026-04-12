@@ -1,16 +1,17 @@
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Article, ArticleStatus } from '../types/article.types';
+// import { Article, ArticleStatus } from '../types/article.types';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Plus, Eye, Edit3, Trash2, X, Check, AlertTriangle,
-  FileText, CheckCircle, Clock, Calendar, Zap, ArrowRight,
+  Plus, Edit3, Trash2, X, Check,
+  Clock, Calendar, Zap, ArrowRight,
   TrendingUp, ChevronLeft, ChevronRight, Podcast, Trophy, Radio
 } from 'lucide-react';
-import { useArticles } from '../hooks/useArticles';
+// import { useArticles } from '../hooks/useArticles';
 import Sidebar from '../components/Sidebar';
 
 /* ── Category tag colors ──────────────────────────────────── */
+/*
 const TAG_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   'Guide':        { bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' },
   'Event':        { bg: '#d1fae5', text: '#065f46', border: '#6ee7b7' },
@@ -20,7 +21,8 @@ const TAG_COLORS: Record<string, { bg: string; text: string; border: string }> =
   'Sports':       { bg: '#fce7f3', text: '#9d174d', border: '#f9a8d4' },
 };
 const DEFAULT_TAG = { bg: '#f1f5f9', text: '#475569', border: '#cbd5e1' };
-const getTagColor = (cat: string) => TAG_COLORS[cat] || DEFAULT_TAG;
+// const getTagColor = (cat: string) => TAG_COLORS[cat] || DEFAULT_TAG;
+*/
 
 /* ── Schedule types ───────────────────────────────────────── */
 const SCHEDULE_TYPE_LIST = ['lecture', 'practice', 'lab', 'seminar'] as const;
@@ -78,14 +80,16 @@ const INITIAL_TRACKS: TrackItem[] = [
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { articles, loading, addArticle, editArticle, deleteArticle } = useArticles();
-
-  /* Article modals */
+  // const { articles, loading, addArticle, editArticle, deleteArticle } = useArticles();
+  
+  /* Article state (Currently unused) */
+  /*
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [selectedArticle] = useState<Article | null>(null);
   const [formData, setFormData] = useState({ title: '', body: '', category: '', status: ArticleStatus.DRAFT });
+  */
 
   /* Schedule state */
   const [schedules, setSchedules] = useState<ScheduleItem[]>([
@@ -144,13 +148,15 @@ const Dashboard = () => {
     podcasts: events.filter(e => e.type === 'Podcast').length,
   }), [schedules, tracks, events]);
 
-  /* ── Article handlers ───────────────────────────────────── */
+  /* ── Article handlers (Currently unused in UI) ────────── */
+  /*
   const handleEditClick = (a: Article) => { setSelectedArticle(a); setFormData({ title: a.title, body: a.body, category: a.category, status: a.status }); setIsModalOpen(true); };
   const handleViewClick = (a: Article) => { setSelectedArticle(a); setIsViewModalOpen(true); };
   const handleDeleteClick = (a: Article) => { setSelectedArticle(a); setIsDeleteModalOpen(true); };
   const handleSave = async (e: React.FormEvent) => { e.preventDefault(); const ok = selectedArticle ? await editArticle(selectedArticle._id, formData) : await addArticle(formData); if (ok) setIsModalOpen(false); };
   const confirmDelete = async () => { if (!selectedArticle) return; if (await deleteArticle(selectedArticle._id)) setIsDeleteModalOpen(false); };
   const openNew = () => { setSelectedArticle(null); setFormData({ title: '', body: '', category: '', status: ArticleStatus.DRAFT }); setIsModalOpen(true); };
+  */
 
   /* ── Schedule handlers ──────────────────────────────────── */
   const openNewSchedule = () => {
@@ -486,69 +492,12 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* ═══════ ARTICLE MODALS ═══════ */}
-      {/* View */}
+      {/* ── ARTICLE MODALS (Currently unused in UI) ── */}
+      {/* 
       <AnimatePresence>
-        {isViewModalOpen && selectedArticle && (
-          <div className="niat-modal-overlay">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="niat-modal-backdrop" onClick={() => setIsViewModalOpen(false)} />
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="niat-modal">
-              <div className="niat-modal-header"><h2>View Article</h2><button onClick={() => setIsViewModalOpen(false)} className="niat-modal-close"><X size={18} /></button></div>
-              <div className="niat-modal-body">
-                <div className="niat-view-field"><label>Title</label><p>{selectedArticle.title}</p></div>
-                <div className="niat-view-row">
-                  <div className="niat-view-field"><label>Category</label><p>{selectedArticle.category}</p></div>
-                  <div className="niat-view-field"><label>Status</label><p>{selectedArticle.status}</p></div>
-                  <div className="niat-view-field"><label>Campus</label><p>{selectedArticle.campus}</p></div>
-                </div>
-                <div className="niat-view-field"><label>Content</label><p className="niat-view-body">{selectedArticle.body}</p></div>
-              </div>
-            </motion.div>
-          </div>
-        )}
+        ... Article modals ...
       </AnimatePresence>
-
-      {/* Edit/New */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="niat-modal-overlay">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="niat-modal-backdrop" onClick={() => setIsModalOpen(false)} />
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="niat-modal">
-              <div className="niat-modal-header"><h2>{selectedArticle ? 'Edit Article' : 'New Article'}</h2><button onClick={() => setIsModalOpen(false)} className="niat-modal-close"><X size={18} /></button></div>
-              <form id="edit-form" onSubmit={handleSave} className="niat-modal-body">
-                <div className="niat-form-group"><label>Title</label><input type="text" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required placeholder="Article title" /></div>
-                <div className="niat-form-row">
-                  <div className="niat-form-group"><label>Category</label><input type="text" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} required placeholder="e.g. Guide, Event" /></div>
-                  <div className="niat-form-group"><label>Status</label><select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value as ArticleStatus})}><option value={ArticleStatus.DRAFT}>Draft</option><option value={ArticleStatus.PUBLISHED}>Published</option></select></div>
-                </div>
-                <div className="niat-form-group"><label>Content</label><textarea value={formData.body} onChange={e => setFormData({...formData, body: e.target.value})} required placeholder="Write article content..." rows={6}></textarea></div>
-              </form>
-              <div className="niat-modal-footer">
-                <button onClick={() => setIsModalOpen(false)} className="niat-btn-outline">Cancel</button>
-                <button type="submit" form="edit-form" className="niat-btn-add"><Check size={16} /><span>Save</span></button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Delete */}
-      <AnimatePresence>
-        {isDeleteModalOpen && (
-          <div className="niat-modal-overlay">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="niat-modal-backdrop" onClick={() => setIsDeleteModalOpen(false)} />
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="niat-modal niat-modal--sm">
-              <div className="niat-delete-icon"><AlertTriangle size={24} /></div>
-              <h2 className="niat-delete-title">Delete permanently?</h2>
-              <p className="niat-delete-desc">Are you sure you want to delete <strong>"{selectedArticle?.title}"</strong>? This cannot be undone.</p>
-              <div className="niat-delete-actions">
-                <button onClick={() => setIsDeleteModalOpen(false)} className="niat-btn-outline">Cancel</button>
-                <button onClick={confirmDelete} className="niat-btn-delete"><Trash2 size={15} /><span>Delete</span></button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      */}
     </div>
   );
 };
