@@ -48,8 +48,9 @@ export const campusScopeGuard = async (req: Request, res: Response, next: NextFu
   }
 
   // For GET (id), PUT, DELETE requests: enforce article.campus === req.user.campus
+  // Only apply this specific Article check if the request is for an article route
   const articleId = req.params['id'];
-  if (articleId) {
+  if (articleId && req.baseUrl.includes('articles')) {
     try {
       const article = await Article.findById(articleId);
       if (!article) {
