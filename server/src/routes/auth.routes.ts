@@ -1,8 +1,11 @@
 import { Router } from 'express';
-import { login, getMe } from '../controllers/auth.controller';
-import { authenticate } from '../middleware/authenticate';
+import { login, signup, getMe } from '../controllers/auth.controller.js';
+import { authenticate } from '../middleware/authenticate.js';
 
 const router: Router = Router();
+
+// POST /api/auth/signup — Register new moderator
+// router.post('/signup', signup);
 
 // POST /api/auth/login — Authenticate user
 router.post('/login', login);

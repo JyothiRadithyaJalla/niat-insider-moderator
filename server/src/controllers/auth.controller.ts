@@ -1,8 +1,33 @@
 import { Request, Response } from 'express';
-import { loginUser, getUserProfile } from '../services/auth.service.js';
+import { loginUser, signupUser, getUserProfile } from '../services/auth.service.js';
 import { HttpStatus } from '../types/auth.types.js';
 // Import to activate the global Express.Request augmentation (adds req.user)
 import '../middleware/authenticate.js';
+
+/**
+ * POST /api/auth/signup
+ * Registers a new user and returns JWT token.
+ */
+export const signup = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { name, email, password, campus } = req.body;
+
+    if (!name || !email || !password || !campus) {
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'All fields are required.' });
+      return;
+    }
+
+    const result = await signupUser({ name, email, password, campus });
+    res.status(HttpStatus.CREATED).json({
+      message: 'Account created successfully.',
+      token: result.token,
+      user: result.user,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Signup failed.';
+    res.status(HttpStatus.BAD_REQUEST).json({ message });
+  }
+};
 
 /**
  * POST /api/auth/login

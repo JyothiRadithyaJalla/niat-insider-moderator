@@ -7,6 +7,8 @@ import authRoutes from './routes/auth.routes.js';
 import articleRoutes from './routes/article.routes.js';
 import announcementRoutes from './routes/announcement.routes.js';
 import jobRoutes from './routes/job.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
+import snippetRoutes from './routes/snippet.routes.js';
 
 const app = express();
 
@@ -64,13 +66,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/snippets', snippetRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // ── Create HTTP server ───────────────────────────────────────
 const server = http.createServer(app);
 
 // ── Start Server First (for Port Binding) ────────────────────
 const PORT = Number(env.PORT) || 5000;
-server.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, () => {
   console.log('----------------------------------------------------');
   console.log(`🚀 Server is listening on 0.0.0.0:${PORT}`);
   console.log(`🌍 Environment: ${env.NODE_ENV}`);

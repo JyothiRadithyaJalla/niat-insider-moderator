@@ -15,6 +15,10 @@ interface LoginResult {
  */
 export declare const loginUser: (email: string, password: string) => Promise<LoginResult>;
 /**
+ * Registers a new user and returns a JWT.
+ */
+export declare const signupUser: (userData: any) => Promise<LoginResult>;
+/**
  * Retrieves user profile by ID (excludes password).
  */
 export declare const getUserProfile: (userId: string) => Promise<IUserDocument | null>;

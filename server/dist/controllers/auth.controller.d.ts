@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import '../middleware/authenticate.js';
 /**
+ * POST /api/auth/signup
+ * Registers a new user and returns JWT token.
+ */
+export declare const signup: (req: Request, res: Response) => Promise<void>;
+/**
  * POST /api/auth/login
  * Authenticates user with email & password, returns JWT token.
  */

@@ -12,6 +12,7 @@ const auth_routes_js_1 = __importDefault(require("./routes/auth.routes.js"));
 const article_routes_js_1 = __importDefault(require("./routes/article.routes.js"));
 const announcement_routes_js_1 = __importDefault(require("./routes/announcement.routes.js"));
 const job_routes_js_1 = __importDefault(require("./routes/job.routes.js"));
+const dashboard_routes_js_1 = __importDefault(require("./routes/dashboard.routes.js"));
 const app = (0, express_1.default)();
 // ── Middleware ───────────────────────────────────────────────
 const allowedOrigins = [
@@ -61,6 +62,7 @@ app.use('/api/auth', auth_routes_js_1.default);
 app.use('/api/articles', article_routes_js_1.default);
 app.use('/api/announcements', announcement_routes_js_1.default);
 app.use('/api/jobs', job_routes_js_1.default);
+app.use('/api/dashboard', dashboard_routes_js_1.default);
 // ── Create HTTP server ───────────────────────────────────────
 const server = http_1.default.createServer(app);
 // ── Start Server First (for Port Binding) ────────────────────

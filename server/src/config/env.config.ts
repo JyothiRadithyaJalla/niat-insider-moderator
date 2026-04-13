@@ -1,6 +1,12 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 // Load environment file based on NODE_ENV
 const envSuffix = process.env.NODE_ENV || 'development';
 const envFile = `.env.${envSuffix}`;

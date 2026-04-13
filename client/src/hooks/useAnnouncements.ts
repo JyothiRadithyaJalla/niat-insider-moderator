@@ -42,23 +42,26 @@ export const useAnnouncements = () => {
     }
   };
 
-  const editAnnouncement = async (
-    id: string, 
-    formData: { 
-      title: string; 
-      content: string; 
-      type: AnnouncementType; 
-      pinned?: boolean 
-    }
-  ) => {
+  const addAnnouncement = async (announcement: any) => {
     try {
-      const res = await api.put(`/announcements/${id}`, formData);
-      setAnnouncements(announcements.map(a => a._id === res.data.announcement._id ? res.data.announcement : a));
-      toast.success('Announcement updated successfully!');
+      const response = await api.post('/announcements', announcement);
+      setAnnouncements([response.data, ...announcements]);
+      toast.success('Announcement posted!');
       return true;
-    } catch (error) {
-      console.error('Failed to save announcement:', error);
-      toast.error('Failed to save announcement.');
+    } catch (err) {
+      toast.error('Failed to post');
+      return false;
+    }
+  };
+
+  const updateAnnouncement = async (id: string, updates: any) => {
+    try {
+      const response = await api.put(`/announcements/${id}`, updates);
+      setAnnouncements(announcements.map(a => a._id === id ? response.data : a));
+      toast.success('Announcement updated!');
+      return true;
+    } catch (err) {
+      toast.error('Failed to update');
       return false;
     }
   };
@@ -67,14 +70,6 @@ export const useAnnouncements = () => {
     try {
       await api.delete(`/announcements/${id}`);
       setAnnouncements(announcements.filter(a => a._id !== id));
-      toast.success('Announcement deleted successfully!');
-      return true;
-    } catch (error) {
-      console.error('Failed to delete announcement:', error);
-      toast.error('Failed to delete announcement.');
-      return false;
-    }
-  };
 
   return { announcements, loading, addAnnouncement, editAnnouncement, deleteAnnouncement, refetch: fetchAnnouncements };
 };

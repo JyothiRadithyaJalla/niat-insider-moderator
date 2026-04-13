@@ -9,11 +9,22 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
 const User_model_js_1 = __importDefault(require("../models/User.model.js"));
 const Article_model_js_1 = __importDefault(require("../models/Article.model.js"));
+const Schedule_model_js_1 = __importDefault(require("../models/Schedule.model.js"));
+const Track_model_js_1 = __importDefault(require("../models/Track.model.js"));
+const Event_model_js_1 = __importDefault(require("../models/Event.model.js"));
 const auth_types_js_1 = require("../types/auth.types.js");
 const article_types_js_1 = require("../types/article.types.js");
 // Load env
-dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../../.env.test') });
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/niat-moderator';
+// Load env
+const envPaths = [
+    path_1.default.resolve(__dirname, '../../.env.development'),
+    path_1.default.resolve(__dirname, '../../.env.test'),
+    path_1.default.resolve(__dirname, '../../.env')
+];
+for (const envPath of envPaths) {
+    dotenv_1.default.config({ path: envPath });
+}
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/niat_insider';
 const campuses = [
     { name: 'Sanjay Ghodawat University', email: 'admin@sgu.edu', abbreviation: 'SGU', password: 'password123' },
     { name: 'Noida International University', email: 'admin@niu.edu', abbreviation: 'NIU', password: 'password123' },
@@ -38,6 +49,9 @@ const seedData = async () => {
         // Clear existing data
         await User_model_js_1.default.deleteMany({});
         await Article_model_js_1.default.deleteMany({});
+        await Schedule_model_js_1.default.deleteMany({});
+        await Track_model_js_1.default.deleteMany({});
+        await Event_model_js_1.default.deleteMany({});
         console.log('Cleared existing data.');
         // Seed Moderators
         const salt = await bcryptjs_1.default.genSalt(10);
@@ -71,6 +85,29 @@ const seedData = async () => {
         }
         await Article_model_js_1.default.insertMany(articlesToCreate);
         console.log(`Seeded ${articlesToCreate.length} articles successfully.`);
+        // Seed Dashboard Items
+        const schedulesToCreate = [];
+        const tracksToCreate = [];
+        const eventsToCreate = [];
+        const defaultGradients = [
+            'linear-gradient(90deg, #bce4f4, #4b48e5)',
+            'linear-gradient(90deg, #67e8f9, #6366f1)',
+            'linear-gradient(90deg, #bae6fd, #4f46e5)',
+            'linear-gradient(90deg, #67e8f9, #818cf8)',
+            'linear-gradient(90deg, #bae6fd, #6366f1)'
+        ];
+        for (const mod of insertedModerators) {
+            // Schedules
+            schedulesToCreate.push({ title: 'Practice Session', type: 'practice', time: '08:30 AM - 09:30 AM', campus: mod.campus, authorId: mod._id }, { title: 'DSA/Practice Session', type: 'lecture', time: '09:30 AM - 10:30 AM', campus: mod.campus, authorId: mod._id }, { title: 'Advance Aptitude/Design', type: 'lecture', time: '10:30 AM - 11:30 AM', campus: mod.campus, authorId: mod._id });
+            // Tracks
+            tracksToCreate.push({ title: 'Introduction sessions', learningStatus: 'Up to Date', learningProgress: 100, practiceStatus: '9 Left', practiceProgress: 80, gradient: defaultGradients[0], campus: mod.campus, authorId: mod._id }, { title: 'Frontend Development', learningStatus: 'Up to Date', learningProgress: 100, practiceStatus: '1 Left', practiceProgress: 90, gradient: defaultGradients[1], campus: mod.campus, authorId: mod._id }, { title: 'Tech Foundations', learningStatus: '3 Left', learningProgress: 65, practiceStatus: '4 Left', practiceProgress: 50, gradient: defaultGradients[2], campus: mod.campus, authorId: mod._id });
+            // Events
+            eventsToCreate.push({ title: 'Tech Talk: Cloud Computing', type: 'Upcoming', date: 'Apr 15', isLive: false, campus: mod.campus, authorId: mod._id }, { title: 'Code Sprint Challenge', type: 'Challenge', date: 'Apr 18', isLive: false, campus: mod.campus, authorId: mod._id }, { title: 'Campus Radio Show', type: 'Podcast', date: 'Today', isLive: true, campus: mod.campus, authorId: mod._id });
+        }
+        await Schedule_model_js_1.default.insertMany(schedulesToCreate);
+        await Track_model_js_1.default.insertMany(tracksToCreate);
+        await Event_model_js_1.default.insertMany(eventsToCreate);
+        console.log('Seeded Dashboard items successfully.');
         console.log('');
         console.log('Seed process complete! You can now login using the credentials listed above.');
         campuses.forEach(c => console.log(`- ${c.email} | Password: ${c.password} (${c.name})`));

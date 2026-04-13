@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api.service';
-import { motion } from 'framer-motion';
-import { Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Lock, Mail, ArrowRight, ShieldCheck, Cpu, Globe } from 'lucide-react';
 import { ROUTES } from '../constants/routes.constants';
 
 const Login = () => {
@@ -26,9 +26,9 @@ const Login = () => {
     } catch (err: unknown) {
       if (typeof err === 'object' && err !== null && 'response' in err) {
         const error = err as { response?: { data?: { message?: string } } };
-        setError(error.response?.data?.message || 'Failed to login');
+        setError(error.response?.data?.message || 'Invalid credentials. Please check and try again.');
       } else {
-        setError('Failed to login');
+        setError('Connection error. Please try again later.');
       }
     } finally {
       setLoading(false);
@@ -36,101 +36,112 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background Glow */}
-      <div className="bg-glow" style={{ top: '-10%', left: '-10%' }}></div>
-      <div className="bg-glow" style={{ bottom: '-20%', right: '-10%', background: 'radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(15, 17, 26, 0) 70%)' }}></div>
+    <div className="login-container">
+      {/* Animated Background Elements */}
+      <div className="login-bg-shapes">
+        <div className="shape shape-1"></div>
+        <div className="shape shape-2"></div>
+        <div className="shape shape-3"></div>
+      </div>
 
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md px-6"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="login-card-wrapper"
       >
-        <div className="glass-panel p-8 rounded-2xl relative overflow-hidden border">
-          {/* Subtle gradient line on top */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500"></div>
-          
-          <div className="text-center mb-8 pt-2">
-            <motion.div 
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring" }}
-              className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-lg shadow-indigo-500/30"
-            >
-              <Lock className="text-white" size={32} />
-            </motion.div>
-            <h1 className="text-3xl font-bold mb-2">Moderator Portal</h1>
-            <p className="text-secondary text-sm">Sign in to manage your campus content</p>
-          </div>
-
-          {error && (
-            <motion.div 
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-3 text-red-500 text-sm"
-            >
-              <AlertCircle size={18} />
-              <span>{error}</span>
-            </motion.div>
-          )}
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-            <div className="input-group relative group">
-              <label className="label">Work Email</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-secondary group-focus-within:text-accent transition-colors">
-                  <Mail size={18} />
-                </div>
-                <input
-                  type="email"
-                  className="input pl-10"
-                  placeholder="mod@campus.edu"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
+        <div className="login-card">
+          <div className="login-card-inner">
+            {/* Header / Logo Section */}
+            <div className="login-header">
+              <motion.div 
+                initial={{ rotate: -10, scale: 0.8 }}
+                animate={{ rotate: 0, scale: 1 }}
+                className="login-logo-orb"
+              >
+                <ShieldCheck size={32} className="logo-icon" />
+              </motion.div>
+              <h1 className="login-title">NIAT Moderator</h1>
+              <p className="login-subtitle">Secure access to campus management system</p>
             </div>
 
-            <div className="input-group relative group">
-              <label className="label">Password</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-secondary group-focus-within:text-accent transition-colors">
-                  <Lock size={18} />
-                </div>
-                <input
-                  type="password"
-                  className="input pl-10"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              type="submit"
-              disabled={loading}
-              className="btn btn-primary w-full mt-4 flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-              ) : (
-                <>
-                  <span>Sign In Access</span>
-                  <ArrowRight size={18} />
-                </>
+            {/* Error Message */}
+            <AnimatePresence>
+              {error && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="login-error"
+                >
+                  <span className="error-text">{error}</span>
+                </motion.div>
               )}
-            </motion.button>
-          </form>
+            </AnimatePresence>
+
+            {/* Form Section */}
+            <form onSubmit={handleSubmit} className="login-form">
+              <div className="login-input-group">
+                <label>Institutional Email</label>
+                <div className="input-wrapper">
+                  <Mail className="input-icon" size={18} />
+                  <input
+                    type="email"
+                    placeholder="moderator@campus.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="login-input-group">
+                <label>Access Key</label>
+                <div className="input-wrapper">
+                  <Lock className="input-icon" size={18} />
+                  <input
+                    type="password"
+                    placeholder="Enter your security password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <button 
+                type="submit" 
+                className={`login-submit-btn ${loading ? 'loading' : ''}`}
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="loader"></span>
+                ) : (
+                  <>
+                    <span>Authorize Login</span>
+                    <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Security Footer */}
+            <div className="login-security-footer">
+              <div className="security-item">
+                <Cpu size={14} />
+                <span>AES-256 Encrypted</span>
+              </div>
+              <div className="security-item">
+                <Globe size={14} />
+                <span>Global RBAC Policy</span>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <p className="text-center text-sm text-secondary mt-6">
-          Protected by strict campus-level RBAC filtering.
+
+        {/* Branding Footer */}
+        <p className="login-footer-text">
+          &copy; 2024 NIAT Insider Platform. Unauthorized access is strictly prohibited.
         </p>
       </motion.div>
     </div>

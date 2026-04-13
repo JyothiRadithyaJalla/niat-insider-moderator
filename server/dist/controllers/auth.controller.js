@@ -1,10 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMe = exports.login = void 0;
+exports.getMe = exports.login = exports.signup = void 0;
 const auth_service_js_1 = require("../services/auth.service.js");
 const auth_types_js_1 = require("../types/auth.types.js");
 // Import to activate the global Express.Request augmentation (adds req.user)
 require("../middleware/authenticate.js");
+/**
+ * POST /api/auth/signup
+ * Registers a new user and returns JWT token.
+ */
+const signup = async (req, res) => {
+    try {
+        const { name, email, password, campus } = req.body;
+        if (!name || !email || !password || !campus) {
+            res.status(auth_types_js_1.HttpStatus.BAD_REQUEST).json({ message: 'All fields are required.' });
+            return;
+        }
+        const result = await (0, auth_service_js_1.signupUser)({ name, email, password, campus });
+        res.status(auth_types_js_1.HttpStatus.CREATED).json({
+            message: 'Account created successfully.',
+            token: result.token,
+            user: result.user,
+        });
+    }
+    catch (error) {
+        const message = error instanceof Error ? error.message : 'Signup failed.';
+        res.status(auth_types_js_1.HttpStatus.BAD_REQUEST).json({ message });
+    }
+};
+exports.signup = signup;
 /**
  * POST /api/auth/login
  * Authenticates user with email & password, returns JWT token.

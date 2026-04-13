@@ -9,5 +9,6 @@ export const ROUTES = {
   ANNOUNCEMENTS: '/announcements',
   INTERNSHIPS: '/internships',
   JOB_PORTAL: '/jobs',
+  ARTICLES: '/articles',
   CODE_PLAYGROUND: '/playground',
 };

@@ -7,7 +7,8 @@ import {
   Terminal, 
   BarChart2,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  FileText
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -19,6 +20,7 @@ const Sidebar = () => {
     { name: 'Home', path: ROUTES.DASHBOARD, icon: <Home size={18} /> },
 
     { name: 'Announcements', path: ROUTES.ANNOUNCEMENTS, icon: <Megaphone size={18} /> },
+    { name: 'Articles', path: ROUTES.ARTICLES, icon: <FileText size={18} /> },
     { name: 'Jobs Board', path: ROUTES.JOB_PORTAL, icon: <Briefcase size={18} /> },
     { name: 'Playground', path: ROUTES.CODE_PLAYGROUND, icon: <Terminal size={18} /> },
     { name: 'Leaderboard', path: ROUTES.LEADERBOARD, icon: <BarChart2 size={18} /> },

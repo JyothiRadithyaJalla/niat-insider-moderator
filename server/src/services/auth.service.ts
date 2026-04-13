@@ -54,6 +54,48 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
 };
 
 /**
+ * Registers a new user and returns a JWT.
+ */
+export const signupUser = async (userData: any): Promise<LoginResult> => {
+  const existingUser = await User.findOne({ email: userData.email });
+  if (existingUser) {
+    throw new Error('User already exists in our system.');
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(userData.password, salt);
+
+  const user = await User.create({
+    ...userData,
+    password: hashedPassword,
+    role: userData.role || UserRole.MODERATOR
+  });
+
+  const tokenPayload: ITokenPayload = {
+    userId: String(user._id),
+    role: user.role,
+    campus: user.campus,
+  };
+
+  const token: string = jwt.sign(
+    tokenPayload as unknown as Record<string, unknown>,
+    env.JWT_SECRET,
+    { expiresIn: env.JWT_EXPIRES_IN as unknown as number }
+  );
+
+  return {
+    token,
+    user: {
+      id: String(user._id),
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      campus: user.campus,
+    },
+  };
+};
+
+/**
  * Retrieves user profile by ID (excludes password).
  */
 export const getUserProfile = async (userId: string): Promise<IUserDocument | null> => {
