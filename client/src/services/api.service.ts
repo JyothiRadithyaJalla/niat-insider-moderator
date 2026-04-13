@@ -13,9 +13,11 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   
-  // Final safeguard: Ensure URL starts with api if baseURL was somehow bypassed
-  if (config.url && !config.url.startsWith('http') && !config.url.startsWith('api') && !config.url.startsWith('/api')) {
-     console.warn('[API Debug] Fixing missing /api prefix for:', config.url);
+  // Final safeguard: Ensure URL starts with /api/ if baseURL was somehow bypassed (common with leading slashes in hooks)
+  if (config.url && !config.url.startsWith('http') && !config.url.startsWith('/api')) {
+     const cleanUrl = config.url.startsWith('/') ? config.url : `/${config.url}`;
+     console.warn(`[API Debug] Auto-prefixing /api to: ${cleanUrl}`);
+     config.url = `/api${cleanUrl}`;
   }
 
   return config;
