@@ -19,13 +19,11 @@ const AuthRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-import { Toaster } from 'react-hot-toast';
-
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <Toaster position="top-right" reverseOrder={false} />
+        <Toaster position="top-right" toastOptions={{ style: { background: '#1e293b', color: '#fff', borderRadius: '10px' } }} />
         <Routes>
           <Route path={ROUTES.LOGIN} element={<AuthRoute><Login /></AuthRoute>} />
           <Route 
@@ -56,7 +54,6 @@ function App() {
           <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
         </Routes>
       </AuthProvider>
-      <Toaster position="bottom-right" toastOptions={{ style: { background: '#1e293b', color: '#fff', borderRadius: '10px' } }} />
     </Router>
   );
 }

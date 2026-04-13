@@ -42,18 +42,6 @@ export const useAnnouncements = () => {
     }
   };
 
-  const addAnnouncement = async (announcement: any) => {
-    try {
-      const response = await api.post('/announcements', announcement);
-      setAnnouncements([response.data, ...announcements]);
-      toast.success('Announcement posted!');
-      return true;
-    } catch (err) {
-      toast.error('Failed to post');
-      return false;
-    }
-  };
-
   const updateAnnouncement = async (id: string, updates: any) => {
     try {
       const response = await api.put(`/announcements/${id}`, updates);
@@ -70,6 +58,14 @@ export const useAnnouncements = () => {
     try {
       await api.delete(`/announcements/${id}`);
       setAnnouncements(announcements.filter(a => a._id !== id));
+      toast.success('Announcement deleted');
+      return true;
+    } catch (error) {
+      console.error('Failed to delete announcement:', error);
+      toast.error('Failed to delete');
+      return false;
+    }
+  };
 
-  return { announcements, loading, addAnnouncement, editAnnouncement, deleteAnnouncement, refetch: fetchAnnouncements };
+  return { announcements, loading, addAnnouncement, editAnnouncement: updateAnnouncement, deleteAnnouncement, refetch: fetchAnnouncements };
 };
