@@ -12,6 +12,9 @@ const router = Router();
 router.use(authenticate);
 router.use(campusScopeGuard);
 
+// Heartbeat for diagnostic checking
+router.get('/heartbeat', (_req, res) => res.json({ status: 'router-active', timestamp: new Date().toISOString() }));
+
 // Schedules
 router.get('/schedules', getSchedules);
 router.post('/schedules', addSchedule);
