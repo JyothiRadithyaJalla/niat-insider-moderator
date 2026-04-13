@@ -1,28 +1,26 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const path_1 = __importDefault(require("path"));
-const User_model_js_1 = __importDefault(require("../models/User.model.js"));
-const Article_model_js_1 = __importDefault(require("../models/Article.model.js"));
-const Schedule_model_js_1 = __importDefault(require("../models/Schedule.model.js"));
-const Track_model_js_1 = __importDefault(require("../models/Track.model.js"));
-const Event_model_js_1 = __importDefault(require("../models/Event.model.js"));
-const auth_types_js_1 = require("../types/auth.types.js");
-const article_types_js_1 = require("../types/article.types.js");
-// Load env
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+import path from 'path';
+import User from '../models/User.model.js';
+import Article from '../models/Article.model.js';
+import Schedule from '../models/Schedule.model.js';
+import Track from '../models/Track.model.js';
+import Event from '../models/Event.model.js';
+import { UserRole } from '../types/auth.types.js';
+import { ArticleStatus } from '../types/article.types.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 // Load env
 const envPaths = [
-    path_1.default.resolve(__dirname, '../../.env.development'),
-    path_1.default.resolve(__dirname, '../../.env.test'),
-    path_1.default.resolve(__dirname, '../../.env')
+    path.resolve(__dirname, '../../.env.development'),
+    path.resolve(__dirname, '../../.env.test'),
+    path.resolve(__dirname, '../../.env')
 ];
 for (const envPath of envPaths) {
-    dotenv_1.default.config({ path: envPath });
+    dotenv.config({ path: envPath });
 }
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/niat_insider';
 const campuses = [
@@ -44,46 +42,60 @@ const campuses = [
 ];
 const seedData = async () => {
     try {
-        await mongoose_1.default.connect(MONGO_URI);
+        await mongoose.connect(MONGO_URI);
         console.log('Connected to MongoDB for seeding...');
         // Clear existing data
-        await User_model_js_1.default.deleteMany({});
-        await Article_model_js_1.default.deleteMany({});
-        await Schedule_model_js_1.default.deleteMany({});
-        await Track_model_js_1.default.deleteMany({});
-        await Event_model_js_1.default.deleteMany({});
+        await User.deleteMany({});
+        await Article.deleteMany({});
+        await Schedule.deleteMany({});
+        await Track.deleteMany({});
+        await Event.deleteMany({});
         console.log('Cleared existing data.');
         // Seed Moderators
-        const salt = await bcryptjs_1.default.genSalt(10);
+        const salt = await bcrypt.genSalt(10);
         const moderatorsToCreate = await Promise.all(campuses.map(async (campus) => ({
             email: campus.email,
-            password: await bcryptjs_1.default.hash(campus.password, salt),
+            password: await bcrypt.hash(campus.password, salt),
             name: `${campus.abbreviation} Moderator`,
-            role: auth_types_js_1.UserRole.MODERATOR,
+            role: UserRole.MODERATOR,
             campus: campus.name,
         })));
-        const insertedModerators = await User_model_js_1.default.insertMany(moderatorsToCreate);
+        const insertedModerators = await User.insertMany(moderatorsToCreate);
         console.log(`Seeded ${insertedModerators.length} moderators successfully.`);
         // Seed Articles
         const articlesToCreate = [];
         for (const mod of insertedModerators) {
             articlesToCreate.push({
-                title: `${mod.campus} - Welcome Guide`,
-                body: `Welcome to the official portal for ${mod.campus}. Here you will find all updates related to our curriculum, upcoming events, and general guidelines.`,
-                category: 'Guide',
+                title: `Getting Started with Full-Stack Development at ${mod.campus}`,
+                body: `Welcome to the official portal. This comprehensive guide will take you through the essential tools and technologies used in our curriculum. Discover how to set up your environment and access internal repositories.`,
+                category: 'Technical',
                 campus: mod.campus,
                 authorId: mod._id,
-                status: article_types_js_1.ArticleStatus.PUBLISHED,
+                status: ArticleStatus.PUBLISHED,
             }, {
-                title: `Important Semester Dates - ${mod.name}`,
-                body: `Please mark your calendars for the upcoming mid-sem evaluations and hackathons hosted at ${mod.campus}.`,
-                category: 'Event',
+                title: `Upcoming Soft Skills Workshop: Mastering Communication`,
+                body: `Join us next Friday for a session on effective professional communication. Learn how to handle client interviews and present your technical ideas with clarity.`,
+                category: 'Workshop',
                 campus: mod.campus,
                 authorId: mod._id,
-                status: article_types_js_1.ArticleStatus.DRAFT,
+                status: ArticleStatus.PUBLISHED,
+            }, {
+                title: `Latest Campus Placement Success Stories`,
+                body: `We are proud to announce that over 40 students from ${mod.campus} have been placed in Tier-1 companies this month alone. Read about their preparation strategies here.`,
+                category: 'Placements',
+                campus: mod.campus,
+                authorId: mod._id,
+                status: ArticleStatus.PUBLISHED,
+            }, {
+                title: `Guide to NIAT Internal Hackathon 2024`,
+                body: `Prepare your teams! The annual hackathon is coming. This draft outline explains the project themes, technical requirements, and evaluation criteria for this year's event.`,
+                category: 'Contest',
+                campus: mod.campus,
+                authorId: mod._id,
+                status: ArticleStatus.DRAFT,
             });
         }
-        await Article_model_js_1.default.insertMany(articlesToCreate);
+        await Article.insertMany(articlesToCreate);
         console.log(`Seeded ${articlesToCreate.length} articles successfully.`);
         // Seed Dashboard Items
         const schedulesToCreate = [];
@@ -104,9 +116,9 @@ const seedData = async () => {
             // Events
             eventsToCreate.push({ title: 'Tech Talk: Cloud Computing', type: 'Upcoming', date: 'Apr 15', isLive: false, campus: mod.campus, authorId: mod._id }, { title: 'Code Sprint Challenge', type: 'Challenge', date: 'Apr 18', isLive: false, campus: mod.campus, authorId: mod._id }, { title: 'Campus Radio Show', type: 'Podcast', date: 'Today', isLive: true, campus: mod.campus, authorId: mod._id });
         }
-        await Schedule_model_js_1.default.insertMany(schedulesToCreate);
-        await Track_model_js_1.default.insertMany(tracksToCreate);
-        await Event_model_js_1.default.insertMany(eventsToCreate);
+        await Schedule.insertMany(schedulesToCreate);
+        await Track.insertMany(tracksToCreate);
+        await Event.insertMany(eventsToCreate);
         console.log('Seeded Dashboard items successfully.');
         console.log('');
         console.log('Seed process complete! You can now login using the credentials listed above.');

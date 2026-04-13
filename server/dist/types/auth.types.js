@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HttpStatus = exports.UserRole = void 0;
-var UserRole;
+export var UserRole;
 (function (UserRole) {
     UserRole["ADMIN"] = "ADMIN";
     UserRole["MODERATOR"] = "MODERATOR";
-})(UserRole || (exports.UserRole = UserRole = {}));
-var HttpStatus;
+})(UserRole || (UserRole = {}));
+export var HttpStatus;
 (function (HttpStatus) {
     HttpStatus[HttpStatus["OK"] = 200] = "OK";
     HttpStatus[HttpStatus["CREATED"] = 201] = "CREATED";
@@ -15,5 +12,5 @@ var HttpStatus;
     HttpStatus[HttpStatus["FORBIDDEN"] = 403] = "FORBIDDEN";
     HttpStatus[HttpStatus["NOT_FOUND"] = 404] = "NOT_FOUND";
     HttpStatus[HttpStatus["INTERNAL_SERVER_ERROR"] = 500] = "INTERNAL_SERVER_ERROR";
-})(HttpStatus || (exports.HttpStatus = HttpStatus = {}));
+})(HttpStatus || (HttpStatus = {}));
 //# sourceMappingURL=auth.types.js.map

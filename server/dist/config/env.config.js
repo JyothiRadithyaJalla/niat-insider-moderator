@@ -1,15 +1,13 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.env = void 0;
-const dotenv_1 = __importDefault(require("dotenv"));
-const path_1 = __importDefault(require("path"));
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 // Load environment file based on NODE_ENV
 const envSuffix = process.env.NODE_ENV || 'development';
 const envFile = `.env.${envSuffix}`;
-dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../../', envFile) });
+dotenv.config({ path: path.resolve(__dirname, '../../', envFile) });
 const getEnvVariable = (key, fallback) => {
     const value = process.env[key] ?? fallback;
     if (value === undefined) {
@@ -17,7 +15,7 @@ const getEnvVariable = (key, fallback) => {
     }
     return value.trim();
 };
-exports.env = {
+export const env = {
     PORT: parseInt(getEnvVariable('PORT', '5000'), 10),
     MONGO_URI: getEnvVariable('MONGO_URI'),
     JWT_SECRET: getEnvVariable('JWT_SECRET'),

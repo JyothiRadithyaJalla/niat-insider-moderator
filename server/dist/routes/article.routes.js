@@ -1,24 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const article_controller_js_1 = require("../controllers/article.controller.js");
-const authenticate_js_1 = require("../middleware/authenticate.js");
-const authorise_js_1 = require("../middleware/authorise.js");
-const auth_types_js_1 = require("../types/auth.types.js");
-const router = (0, express_1.Router)();
+import { Router } from 'express';
+import { getArticles, getArticle, addArticle, editArticle, removeArticle, } from '../controllers/article.controller.js';
+import { authenticate } from '../middleware/authenticate.js';
+import { authorise, campusScopeGuard } from '../middleware/authorise.js';
+import { UserRole } from '../types/auth.types.js';
+const router = Router();
 // All article routes require authentication + role check + campus scope
-router.use(authenticate_js_1.authenticate);
-router.use((0, authorise_js_1.authorise)(auth_types_js_1.UserRole.MODERATOR, auth_types_js_1.UserRole.ADMIN));
-router.use(authorise_js_1.campusScopeGuard);
+router.use(authenticate);
+router.use(authorise(UserRole.MODERATOR, UserRole.ADMIN));
+router.use(campusScopeGuard);
 // GET    /api/articles      — List articles (campus-scoped, paginated)
-router.get('/', article_controller_js_1.getArticles);
+router.get('/', getArticles);
 // GET    /api/articles/:id  — Get single article
-router.get('/:id', article_controller_js_1.getArticle);
+router.get('/:id', getArticle);
 // POST   /api/articles      — Create article
-router.post('/', article_controller_js_1.addArticle);
+router.post('/', addArticle);
 // PUT    /api/articles/:id  — Update article
-router.put('/:id', article_controller_js_1.editArticle);
+router.put('/:id', editArticle);
 // DELETE /api/articles/:id  — Delete article
-router.delete('/:id', article_controller_js_1.removeArticle);
-exports.default = router;
+router.delete('/:id', removeArticle);
+export default router;
 //# sourceMappingURL=article.routes.js.map

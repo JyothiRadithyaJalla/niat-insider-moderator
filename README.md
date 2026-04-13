@@ -76,6 +76,10 @@ VITE_API_URL=http://localhost:5001/api
 | [GET]    | `/api/articles/:id`       | Get single article                        | Moderator   |
 | [PUT]    | `/api/articles/:id`       | Edit article (campus-scoped)              | Moderator   |
 | [DELETE] | `/api/articles/:id`       | Delete article (campus-scoped)            | Moderator   |
+| [GET]    | `/api/dashboard/schedules`| List campus schedules                     | Moderator   |
+| [GET]    | `/api/dashboard/tracks`   | List campus tracks                        | Moderator   |
+| [GET]    | `/api/dashboard/events`   | List campus events                        | Moderator   |
+| [POST]   | `/api/snippets`           | Create/Update code environment            | Moderator   |
 
 ## Tech Stack
 - MongoDB, Express.js, React, Node.js, TypeScript
