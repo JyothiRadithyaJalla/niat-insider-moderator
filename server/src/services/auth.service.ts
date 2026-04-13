@@ -19,13 +19,18 @@ interface LoginResult {
  * Authenticates a user by email + password and returns a JWT.
  */
 export const loginUser = async (email: string, password: string): Promise<LoginResult> => {
-  const user: IUserDocument | null = await User.findOne({ email });
+  const normalizedEmail = email.trim().toLowerCase();
+  console.log(`[Auth Debug] Attempting login for: ${normalizedEmail}`);
+  
+  const user: IUserDocument | null = await User.findOne({ email: normalizedEmail });
   if (!user) {
+    console.warn(`[Auth Debug] User not found: ${normalizedEmail}`);
     throw new Error('Invalid email or password.');
   }
 
   const isMatch: boolean = await bcrypt.compare(password, user.password);
   if (!isMatch) {
+    console.warn(`[Auth Debug] Password mismatch for: ${normalizedEmail}`);
     throw new Error('Invalid email or password.');
   }
 
@@ -57,7 +62,8 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
  * Registers a new user and returns a JWT.
  */
 export const signupUser = async (userData: any): Promise<LoginResult> => {
-  const existingUser = await User.findOne({ email: userData.email });
+  const normalizedEmail = userData.email.trim().toLowerCase();
+  const existingUser = await User.findOne({ email: normalizedEmail });
   if (existingUser) {
     throw new Error('User already exists in our system.');
   }
