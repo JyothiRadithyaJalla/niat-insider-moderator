@@ -4,7 +4,7 @@ import { API_URL } from '../constants/routes.constants';
 console.log('[API Debug] BaseURL:', API_URL);
 
 const api = axios.create({
-  baseURL: (API_URL && API_URL !== '/') ? (API_URL.endsWith('/') ? API_URL : `${API_URL}/`) : '/api/',
+  baseURL: API_URL,
 });
 
 api.interceptors.request.use((config) => {

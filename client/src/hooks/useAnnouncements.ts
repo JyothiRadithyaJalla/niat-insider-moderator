@@ -10,7 +10,7 @@ export const useAnnouncements = () => {
   const fetchAnnouncements = async () => {
     setLoading(true);
     try {
-      const response = await api.get('announcements');
+      const response = await api.get('/announcements');
       setAnnouncements(response.data.announcements);
     } catch (error) {
       console.error('Failed to fetch announcements:', error);
@@ -31,7 +31,7 @@ export const useAnnouncements = () => {
     pinned?: boolean 
   }) => {
     try {
-      const res = await api.post('announcements', formData);
+      const res = await api.post('/announcements', formData);
       setAnnouncements([res.data.announcement, ...announcements]);
       toast.success('Announcement created successfully!');
       return true;
@@ -44,7 +44,7 @@ export const useAnnouncements = () => {
 
   const updateAnnouncement = async (id: string, updates: any) => {
     try {
-      const response = await api.put(`announcements/${id}`, updates);
+      const response = await api.put(`/announcements/${id}`, updates);
       setAnnouncements(announcements.map(a => a._id === id ? response.data : a));
       toast.success('Announcement updated!');
       return true;
@@ -56,7 +56,7 @@ export const useAnnouncements = () => {
 
   const deleteAnnouncement = async (id: string) => {
     try {
-      await api.delete(`announcements/${id}`);
+      await api.delete(`/announcements/${id}`);
       setAnnouncements(announcements.filter(a => a._id !== id));
       toast.success('Announcement deleted');
       return true;
