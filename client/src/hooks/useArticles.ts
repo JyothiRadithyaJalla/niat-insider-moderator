@@ -10,7 +10,7 @@ export const useArticles = () => {
   const fetchArticles = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/articles');
+      const response = await api.get('articles');
       setArticles(response.data.articles);
     } catch (error) {
       console.error('Failed to fetch articles:', error);
@@ -26,7 +26,7 @@ export const useArticles = () => {
 
   const addArticle = async (formData: { title: string; body: string; category: string; status: ArticleStatus }) => {
     try {
-      const res = await api.post('/articles', formData);
+      const res = await api.post('articles', formData);
       setArticles([res.data.article, ...articles]);
       toast.success('Article created successfully!');
       return true;
@@ -39,7 +39,7 @@ export const useArticles = () => {
 
   const editArticle = async (id: string, formData: { title: string; body: string; category: string; status: ArticleStatus }) => {
     try {
-      const res = await api.put(`/articles/${id}`, formData);
+      const res = await api.put(`articles/${id}`, formData);
       setArticles(articles.map(a => a._id === res.data.article._id ? res.data.article : a));
       toast.success('Article updated successfully!');
       return true;
@@ -52,7 +52,7 @@ export const useArticles = () => {
 
   const deleteArticle = async (id: string) => {
     try {
-      await api.delete(`/articles/${id}`);
+      await api.delete(`articles/${id}`);
       setArticles(articles.filter(a => a._id !== id));
       toast.success('Article deleted successfully!');
       return true;

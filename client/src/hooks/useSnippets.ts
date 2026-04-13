@@ -18,7 +18,7 @@ export const useSnippets = () => {
 
   const fetchSnippets = async () => {
     try {
-      const response = await api.get('/snippets');
+      const response = await api.get('snippets');
       setSnippets(response.data);
     } catch (err) {
       console.error('Failed to fetch snippets');
@@ -33,7 +33,7 @@ export const useSnippets = () => {
 
   const addSnippet = async (snippet: Omit<Snippet, '_id' | 'campus' | 'createdAt'>) => {
     try {
-      const response = await api.post('/snippets', snippet);
+      const response = await api.post('snippets', snippet);
       setSnippets([...snippets, response.data]);
       toast.success('Language environment created!');
       return response.data;
@@ -45,7 +45,7 @@ export const useSnippets = () => {
 
   const updateSnippet = async (id: string, updates: Partial<Snippet>) => {
     try {
-      const response = await api.put(`/snippets/${id}`, updates);
+      const response = await api.put(`snippets/${id}`, updates);
       setSnippets(snippets.map(s => s._id === id ? response.data : s));
       toast.success('Settings updated!');
       return response.data;
@@ -57,7 +57,7 @@ export const useSnippets = () => {
 
   const deleteSnippet = async (id: string) => {
     try {
-      await api.delete(`/snippets/${id}`);
+      await api.delete(`snippets/${id}`);
       setSnippets(snippets.filter(s => s._id !== id));
       toast.success('Snippet deleted');
       return true;

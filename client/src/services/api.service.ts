@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API_URL } from '../constants/routes.constants';
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_URL.endsWith('/') ? API_URL : `${API_URL}/`,
 });
 
 api.interceptors.request.use((config) => {
