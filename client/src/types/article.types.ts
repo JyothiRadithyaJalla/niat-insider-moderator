@@ -13,7 +13,8 @@ export interface User {
 
 export enum ArticleStatus {
   PUBLISHED = 'PUBLISHED',
-  DRAFT = 'DRAFT'
+  DRAFT = 'DRAFT',
+  ARCHIVED = 'ARCHIVED'
 }
 
 export interface Article {

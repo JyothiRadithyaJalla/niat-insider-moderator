@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import { Play, Save, Trash2, Plus, Terminal, Settings, X, Check } from 'lucide-react';
+import { Play, Save, Trash2, Plus, Terminal, Settings, X } from 'lucide-react';
 import { useSnippets, Snippet } from '../hooks/useSnippets';
 
 const CodePlayground = () => {
-  const { snippets, addSnippet, updateSnippet, deleteSnippet, loading } = useSnippets();
+  const { snippets, addSnippet, updateSnippet, deleteSnippet } = useSnippets();
   const [activeSnippet, setActiveSnippet] = useState<Snippet | null>(null);
   const [code, setCode] = useState('// Select or create a language to start coding');
   const [output, setOutput] = useState('');
@@ -196,7 +196,7 @@ const CodePlayground = () => {
 
         {/* Management Modal */}
         {showModal && (
-          <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyCenter: 'center', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', padding: 20 }}>
+          <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', padding: 20 }}>
             <div style={{ background: '#fff', borderRadius: 16, width: '100%', maxWidth: 400, margin: 'auto', padding: 24, boxShadow: '0 20px 50px rgba(0,0,0,0.2)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
                 <h2 style={{ fontSize: 18, fontWeight: 700 }}>{modalMode === 'add' ? 'New Language Profile' : 'Edit Language Profile'}</h2>

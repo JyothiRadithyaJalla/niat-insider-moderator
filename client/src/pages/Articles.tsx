@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import { 
   FileText, Search, Plus, Edit3, Trash2, 
-  X, Check, Eye, AlertTriangle, Filter, ChevronLeft, ChevronRight
+  X, Check, Eye, AlertTriangle
 } from 'lucide-react';
 import { useArticles } from '../hooks/useArticles';
 import { Article, ArticleStatus } from '../types/article.types';
