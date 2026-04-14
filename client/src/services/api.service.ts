@@ -12,17 +12,6 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  
-  // Smarter safeguard: Prepend /api ONLY if it is missing from BOTH the baseURL and the request URL
-  const hasBaseApi = config.baseURL?.includes('/api');
-  const hasRequestApi = config.url?.startsWith('/api') || config.url?.startsWith('api');
-  
-  if (config.url && !config.url.startsWith('http') && !hasBaseApi && !hasRequestApi) {
-     const cleanUrl = config.url.startsWith('/') ? config.url : `/${config.url}`;
-     console.warn(`[API Debug] Prepending missing /api to: ${cleanUrl}`);
-     config.url = `/api${cleanUrl}`;
-  }
-
   return config;
 });
 
