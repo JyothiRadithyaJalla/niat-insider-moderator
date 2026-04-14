@@ -7,12 +7,16 @@ import { UserRole } from '../types/auth.types.js';
  * Authenticates a user by email + password and returns a JWT.
  */
 export const loginUser = async (email, password) => {
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+    console.log(`[Auth Debug] Attempting login for: ${normalizedEmail}`);
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
+        console.warn(`[Auth Debug] User not found: ${normalizedEmail}`);
         throw new Error('Invalid email or password.');
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+        console.warn(`[Auth Debug] Password mismatch for: ${normalizedEmail}`);
         throw new Error('Invalid email or password.');
     }
     const tokenPayload = {
@@ -36,7 +40,8 @@ export const loginUser = async (email, password) => {
  * Registers a new user and returns a JWT.
  */
 export const signupUser = async (userData) => {
-    const existingUser = await User.findOne({ email: userData.email });
+    const normalizedEmail = userData.email.trim().toLowerCase();
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
         throw new Error('User already exists in our system.');
     }

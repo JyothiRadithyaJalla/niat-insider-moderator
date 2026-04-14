@@ -49,7 +49,7 @@ app.get('/api/test', (_req, res) => {
     res.status(200).json({
         message: 'API is working! Moderator backend is up and running.',
         environment: env.NODE_ENV,
-        version: '1.0.6-dashboard-sync',
+        version: '1.0.7-prod-build-fix',
         timestamp: new Date().toISOString()
     });
 });
