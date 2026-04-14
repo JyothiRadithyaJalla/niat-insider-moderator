@@ -73,7 +73,7 @@ app.use('/api/dashboard', dashboardRoutes);
 const server = http.createServer(app);
 
 // ── Start Server First (for Port Binding) ────────────────────
-const PORT = Number(env.PORT) || 5000;
+const PORT = Number(process.env.PORT) || 5000;
 server.listen(PORT, () => {
   console.log('----------------------------------------------------');
   console.log(`🚀 Server is listening on 0.0.0.0:${PORT}`);
