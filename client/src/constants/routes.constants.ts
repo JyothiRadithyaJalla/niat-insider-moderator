@@ -1,4 +1,4 @@
-export const API_URL = import.meta.env.VITE_API_URL;
+export const API_URL = import.meta.env.VITE_API_URL || 'https://niat-insider-moderator-2.onrender.com/api';
 
 export const ROUTES = {
   HOME: '/',

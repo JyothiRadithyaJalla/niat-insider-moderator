@@ -59,7 +59,7 @@ app.use('/api/articles', articleRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/snippets', snippetRoutes);
-app.use('/api', dashboardRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 // ── Create HTTP server ───────────────────────────────────────
 const server = http.createServer(app);
 // ── Start Server First (for Port Binding) ────────────────────
