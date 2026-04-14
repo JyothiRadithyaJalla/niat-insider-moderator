@@ -46,8 +46,7 @@ Use these credentials to test the platform. Each account is scoped to its specif
 |--------|-------|----------|
 | **Kapil Kavuri Hub (KKH)** | `admin@kkh.edu` | `password123` |
 | **Sanjay Ghodawat University (SGU)** | `admin@sgu.edu` | `password123` |
-| **Noida International University (NIU)** | `admin@niu.edu` | `password123` |
-| **NRI University** | `admin@nri.edu` | `password123` |
+
 
 ## Environment Variables
 
