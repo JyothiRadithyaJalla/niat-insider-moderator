@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "postinstall": "npm run build",
-    "build": "tsc",
+    "postinstall": "echo 'Skipping server-side build hook'",
+    "build": "node -e \"if(process.env.RENDER){console.log('Skipping tsc on Render');process.exit(0)}\" && tsc",
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "seed": "tsx src/scripts/seed.ts",
