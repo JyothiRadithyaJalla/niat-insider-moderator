@@ -18,7 +18,7 @@ export const useSchedules = () => {
   const fetchSchedules = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/dashboard/schedules');
+      const response = await api.get('/schedules');
       setSchedules(response.data);
     } catch (error) {
       console.error('Failed to fetch schedules:', error);
@@ -34,7 +34,7 @@ export const useSchedules = () => {
 
   const addSchedule = async (data: Omit<ScheduleItem, '_id'>) => {
     try {
-      const res = await api.post('/dashboard/schedules', data);
+      const res = await api.post('/schedules', data);
       setSchedules([...schedules, res.data]);
       toast.success('Schedule added!');
       return true;
@@ -46,7 +46,7 @@ export const useSchedules = () => {
 
   const editSchedule = async (id: string, data: Omit<ScheduleItem, '_id'>) => {
     try {
-      const res = await api.put(`/dashboard/schedules/${id}`, data);
+      const res = await api.put(`/schedules/${id}`, data);
       setSchedules(schedules.map(s => s._id === id ? res.data : s));
       toast.success('Schedule updated!');
       return true;
@@ -58,7 +58,7 @@ export const useSchedules = () => {
 
   const deleteSchedule = async (id: string) => {
     try {
-      await api.delete(`/dashboard/schedules/${id}`);
+      await api.delete(`/schedules/${id}`);
       setSchedules(schedules.filter(s => s._id !== id));
       toast.success('Schedule deleted!');
       return true;
