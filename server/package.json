@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "postinstall": "echo 'Skipping server-side build hook'",
-    "build": "node -e \"if(process.env.RENDER){console.log('Skipping tsc on Render');process.exit(0)}\" && tsc",
+    "build": "node -e \"if(!process.env.RENDER) { require('child_process').execSync('npx tsc', {stdio: 'inherit'}); } else { console.log('Skipped tsc on Render'); }\"",
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "seed": "tsx src/scripts/seed.ts",
