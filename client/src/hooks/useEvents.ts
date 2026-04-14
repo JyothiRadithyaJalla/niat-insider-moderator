@@ -19,7 +19,7 @@ export const useEvents = () => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/events');
+      const response = await api.get('/dashboard/events');
       setEvents(response.data);
     } catch (error) {
       console.error('Failed to fetch events:', error);
@@ -35,7 +35,7 @@ export const useEvents = () => {
 
   const addEvent = async (data: Omit<CampusEvent, '_id'>) => {
     try {
-      const res = await api.post('/events', data);
+      const res = await api.post('/dashboard/events', data);
       setEvents([...events, res.data]);
       toast.success('Event added!');
       return true;
@@ -47,7 +47,7 @@ export const useEvents = () => {
 
   const deleteEvent = async (id: string) => {
     try {
-      await api.delete(`/events/${id}`);
+      await api.delete(`/dashboard/events/${id}`);
       setEvents(events.filter(e => e._id !== id));
       toast.success('Event deleted!');
       return true;
