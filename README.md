@@ -7,14 +7,14 @@ DeployLink = niat-insider-moderator-zeta.vercel.app
 
 ## Screenshots
 
-### Dashboard
+### Student Dashboard with moderator Access
 <img width="1893" height="920" alt="image" src="https://github.com/user-attachments/assets/9a82ecb0-229f-418c-8a23-d669db42d9f6" />
 
 
-### Announcements Management
+### Announcements Management control by Moderator
 ![Announcements](screenshots/announcements.png)
 
-### Jobs Board
+### Jobs Board control by Moderator
 ![Jobs Board](screenshots/jobs_board.png)
 
 📰 Articles Access & Moderator Control
