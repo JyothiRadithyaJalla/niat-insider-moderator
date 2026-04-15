@@ -12,7 +12,8 @@ DeployLink = niat-insider-moderator-zeta.vercel.app
 
 
 ### Announcements Management control by Moderator
-![Announcements](screenshots/announcements.png)
+<img width="1892" height="896" alt="image" src="https://github.com/user-attachments/assets/953a819b-5ee2-4dbf-90e4-1ca4bc7be64f" />
+
 
 ### Jobs Board control by Moderator
 ![Jobs Board](screenshots/jobs_board.png)
