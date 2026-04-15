@@ -16,6 +16,25 @@ DeployLink = niat-insider-moderator-zeta.vercel.app
 ### Jobs Board
 ![Jobs Board](screenshots/jobs_board.png)
 
+📰 Articles Access & Moderator Control
+The Articles page is available in the Student Portal only.
+Students can create articles from the student portal.
+When a student submits an article:
+It is stored in the database with status = pending
+It will not be visible publicly until approved
+👨‍💻 Moderator Access
+The moderator can log in and open the platform
+The moderator can view articles created by students of their campus
+The moderator cannot create articles, but can:
+✏ Edit articles
+❌ Delete articles
+✅ Approve articles
+🚫 Reject articles
+🏫 Campus-Based Control
+Each moderator is assigned to a specific campus
+The moderator can only see:
+Articles belonging to their campus students
+
 ## Setup Instructions
 
 ### Prerequisites
